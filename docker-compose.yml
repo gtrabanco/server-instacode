@@ -1,26 +1,26 @@
-version: "3.7"
+version: '3.7'
 
-services: 
-  instacode: 
+services:
+  instacode:
     build: .
+    links:
+      - snippetsdb:db
     depends_on:
-      - db
+      - snippetsdb
     environment:
       - MONGO_URI=mongodb://db/instacode
-      - PORT=3000
+      # - PORT=8000
       - JWT_SECRET=secret
-    ports: 
-      - "3000:3000"
+    ports:
+      - '3000:8000'
     volumes:
       - ./src:/usr/src/app
       - nodemodules:/usr/src/app/node_modules
     command: npm run start
     networks:
       - instacode
-  db:
+  snippetsdb:
     image: mongo
-    ports: 
-      - "27017:27017"
     volumes:
       - mongodata:/data/db
     networks:
